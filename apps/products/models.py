@@ -13,7 +13,7 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
     count = models.IntegerField()
-    price = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+    price = models.IntegerField()
     avatar = models.ImageField(default='default.png', upload_to='products_images')
 
     def __str__(self):
