@@ -61,3 +61,8 @@ class UserUpdateAPIView(RetrieveUpdateAPIView):
             return Response(status=status.HTTP_200_OK, data=serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+
+
+class UserListAPIView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer

@@ -9,7 +9,6 @@ from apps.products.serializers import ProductOrdersSerializer
 
 class CompanySerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
-    owner = serializers.SerializerMethodField()
     photo = serializers.ImageField()
 
     class Meta:
@@ -28,9 +27,6 @@ class CompanySerializer(serializers.ModelSerializer):
 
     def get_categories(self, obj):
         return CategorySerializer(obj.category_set.all(), many=True).data
-
-    def get_owner(self, obj):
-        return f'{obj.owner.first_name} {obj.owner.last_name}'
 
 
 class CompanyCreateUpdateSerializer(serializers.ModelSerializer):
