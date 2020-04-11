@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.generics import (
    ListAPIView,
    RetrieveAPIView,
@@ -12,7 +13,8 @@ from rest_framework.generics import (
 from .serializers import (
     UserCreateSerializer,
     UserProfileSerializer,
-    UserUpdateSerializer,)
+    UserUpdateSerializer,
+    UserTokenSerializer)
 
 
 
@@ -66,3 +68,16 @@ class UserUpdateAPIView(RetrieveUpdateAPIView):
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
+
+
+class UserTokenAPIView(APIView):
+    serializer_class = UserTokenSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.get(username=serializer.validated_data['username'])
+        return Response(status=status.HTTP_200_OK, data={
+            'data': UserProfileSerializer(user).data,
+            'token': user.auth_token.key
+        })

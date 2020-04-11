@@ -1,6 +1,7 @@
 from rest_framework.validators import ValidationError, UniqueValidator
 from rest_framework import serializers
 from .models import User
+from django.shortcuts import get_object_or_404
 
 
 
@@ -55,3 +56,12 @@ class UserUpdateSerializer(serializers.ModelSerializer):
                   'city',
                   'is_businessman',
                   'avatar',)
+
+
+class UserTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+    def validate_username(self, username):
+        user = get_object_or_404(User, username=username)
+        return username
