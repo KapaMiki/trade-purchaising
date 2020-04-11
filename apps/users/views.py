@@ -1,6 +1,7 @@
 from .models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.generics import (
    ListAPIView,
@@ -22,6 +23,17 @@ class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User(**serializer.validated_data)
+        user.set_password(serializer.validated_data['password'])
+        user.save()
+        token = Token.objects.create(user=user)
+        return Response(status=status.HTTP_201_CREATED, data={
+            'data':serializer.validated_data,
+            'token':token.key
+        })
 
 class UserProfileAPIView(RetrieveAPIView):
     queryset = User.objects.all()
