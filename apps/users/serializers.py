@@ -42,6 +42,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(min_length=2)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
     phone = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all())])
+    avatar = serializers.ImageField()
 
     class Meta:
         model = User

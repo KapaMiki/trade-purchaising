@@ -22,9 +22,6 @@ class ProductSerializer(serializers.ModelSerializer):
                   'price',
                   'avatar',)
 
-    # def get_company(self, obj):
-    #     return obj.company.name
-
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     company_id = serializers.IntegerField()
@@ -39,8 +36,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
                   'description',
                   'count',
                   'price',
-                  'avatar',
-                  'is_offer',)
+                  'avatar',)
 
     def validate_company_id(self, id):
         company = get_object_or_404(Company, id=id)
@@ -64,8 +60,7 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
                   'description',
                   'count',
                   'price',
-                  'avatar',
-                  'is_offer',)
+                  'avatar',)
 
 
 class ProductOrdersSerializer(serializers.ModelSerializer):
@@ -81,7 +76,6 @@ class ProductOrdersSerializer(serializers.ModelSerializer):
                   'count',
                   'price',
                   'avatar',
-                  'is_offer',
                   'orders')
 
     def get_orders(self, obj):
