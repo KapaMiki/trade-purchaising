@@ -44,7 +44,7 @@ class UserProfileAPIView(RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.serializer_class(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class UserUpdateAPIView(RetrieveUpdateAPIView):

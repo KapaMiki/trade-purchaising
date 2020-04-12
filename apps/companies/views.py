@@ -44,7 +44,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer = serializer_class(instance=instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(status=status.HTTP_202_ACCEPTED, data=serializer.data)
+        return Response(status=status.HTTP_202_ACCEPTED, data=serializer.validated_data)
 
     def create(self, request, *args, **kwargs):
         user = request.user
@@ -54,14 +54,14 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer = serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         Company.objects.create(owner=user, **serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+        return Response(status=status.HTTP_201_CREATED, data=serializer.validated_data)
 
     def categories(self, request, pk, *args, **kwargs):
         company = get_object_or_404(Company, pk=pk)
         categories = company.category_set.all()
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(categories, many=True)
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_200_OK, data=serializer.validated_data)
 
     def orders(self, request, pk, *args, **kwargs):
         company = get_object_or_404(Company, pk=pk)
@@ -69,7 +69,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
             products = company.product_set.all()
             serializer_class = self.get_serializer_class()
             serializer = serializer_class(products, many=True)
-            return Response(status=status.HTTP_200_OK, data=serializer.data)
+            return Response(status=status.HTTP_200_OK, data=serializer.validated_data)
         return Response(status=status.HTTP_403_FORBIDDEN, data={
             'detail':'It is not your Company'
         })
