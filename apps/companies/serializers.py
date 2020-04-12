@@ -30,7 +30,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class CompanyCreateUpdateSerializer(serializers.ModelSerializer):
-    photo = serializers.ImageField()
+    photo = serializers.ImageField(required=False)
 
     class Meta:
         model = Company
