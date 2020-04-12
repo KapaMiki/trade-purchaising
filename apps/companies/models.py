@@ -6,11 +6,11 @@ from django.core.exceptions import ValidationError
 
 class Company(models.Model):
     owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT)
-    name = models.CharField(max_length=20, unique=True)
-    description = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
+    activity = models.TextField()
+    description = models.TextField()
     created_data = models.DateField()
     BIN = models.CharField(max_length=50)
-    activity = models.CharField(max_length=20)
     photo = models.ImageField(default='default.png', upload_to='companies_images')
     country = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
