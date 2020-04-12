@@ -61,7 +61,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         categories = company.category_set.all()
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(categories, many=True)
-        return Response(status=status.HTTP_200_OK, data=serializer.validated_data)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     def orders(self, request, pk, *args, **kwargs):
         company = get_object_or_404(Company, pk=pk)
@@ -69,7 +69,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
             products = company.product_set.all()
             serializer_class = self.get_serializer_class()
             serializer = serializer_class(products, many=True)
-            return Response(status=status.HTTP_200_OK, data=serializer.validated_data)
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
         return Response(status=status.HTTP_403_FORBIDDEN, data={
             'detail':'It is not your Company'
         })
