@@ -53,7 +53,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_403_FORBIDDEN, data={'message':'User is not businessman'})
         serializer = serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        Company.objects.create(owner=user, **serializer.validated_data)
+        company = Company.objects.create(owner=user, **serializer.validated_data)
+        serializer.validated_data['photo'] = company.phone.url
         return Response(status=status.HTTP_201_CREATED, data=serializer.validated_data)
 
     def categories(self, request, pk, *args, **kwargs):

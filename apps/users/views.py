@@ -76,8 +76,17 @@ class UserTokenAPIView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         user = User.objects.get(username=serializer.validated_data['username'])
-        return Response(status=status.HTTP_200_OK, data={
-            'data': UserProfileSerializer(user).data,
-            'token': user.auth_token.key
-        })
+  
+        if user.check_password(serializer.validated_data['password']):
+            status_code = status.HTTP_200_OK
+            data = {
+                'data': UserProfileSerializer(user).data,
+                'token': user.auth_token.key
+            }
+        else:
+            status_code = status.HTTP_401_UNAUTHORIZED
+            data = {'detail':'Incorrect login or password'}
+        
+        return Response(status=status_code, data=data)
