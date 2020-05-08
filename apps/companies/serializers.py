@@ -9,7 +9,6 @@ from apps.products.serializers import ProductOrdersSerializer
 
 class CompanySerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
-    photo = serializers.ImageField()
 
     class Meta:
         model = Company

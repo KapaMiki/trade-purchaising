@@ -21,7 +21,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer_class = self.serializer_class
         if self.action in ['update', 'create']:
             serializer_class = CompanyCreateUpdateSerializer
-        if self.action == 'categories':
+        if self.action in ['categories']:
             serializer_class = CategorySerializer
         if self.action == 'orders':
             serializer_class = ProductOrdersSerializer
@@ -37,6 +37,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
+
+    def list(self, request):
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(Company.objects.all(), many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     def update(self, request, pk=None, *args, **kwargs):
         serializer_class = self.get_serializer_class()
