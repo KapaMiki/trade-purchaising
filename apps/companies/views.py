@@ -54,7 +54,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer = serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         company = Company.objects.create(owner=user, **serializer.validated_data)
-        serializer.validated_data['photo'] = company.phone.url
+        serializer.validated_data['photo'] = company.photo.url
         return Response(status=status.HTTP_201_CREATED, data=serializer.validated_data)
 
     def categories(self, request, pk, *args, **kwargs):
