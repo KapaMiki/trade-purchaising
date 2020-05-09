@@ -37,13 +37,14 @@ class ProductViewSet(viewsets.ModelViewSet):
             permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
 
-    def update(self, request, pk=None, *args, **kwargs):
+    def update(self, request, pk, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         instance = self.get_object()
         serializer = serializer_class(instance=instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(status=status.HTTP_202_ACCEPTED, data=serializer.validated_data)
+        comapny_serializer = CompanySerializer(instance.company)
+        return Response(status=status.HTTP_202_ACCEPTED, data=comapny_serializer.data)
 
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()
