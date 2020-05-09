@@ -10,6 +10,7 @@ from .serializers import (
     CategoryCreateSerializer,
     CategoryUpdateSerializer
 )
+from apps.companies.serializers import CompanySerializer
 
 
 
@@ -49,4 +50,5 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         company = Company.objects.get(id=serializer.data['company_id'])
         Category.objects.create(company=company, **serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED, data=serializer.validated_data)
+        company_serializer = CompanySerializer(company)
+        return Response(status=status.HTTP_201_CREATED, data=company_serializer.data)
