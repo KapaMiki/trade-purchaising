@@ -1,5 +1,5 @@
 from .models import Company
-from .permissions import IsOwnerCompany
+from .permissions import IsOwnerCompany, IsBusinessman
 from apps.categories.serializers import CategorySerializer
 from apps.products.serializers import ProductOrdersSerializer
 from django.shortcuts import get_object_or_404
@@ -29,11 +29,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'update':
-            permission_classes = [IsAuthenticated, IsOwnerCompany]
-        elif self.action == 'create':
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated, IsBusinessman, IsOwnerCompany]
+        elif self.action in ['create', 'my']:
+            permission_classes = [IsAuthenticated, IsBusinessman]
         elif self.action == 'orders':
-            permission_classes = [IsAuthenticated, IsOwnerCompany]
+            permission_classes = [IsAuthenticated, IsBusinessman, IsOwnerCompany]
         else:
             permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
@@ -84,4 +84,6 @@ class CompanyViewSet(viewsets.ModelViewSet):
             'detail':'It is not your Company'
         })
 
-
+    def my(self, reuqest):
+        serializer = serializer_class(request.user.company_set.all(), many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)

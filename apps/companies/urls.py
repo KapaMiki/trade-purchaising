@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:pk>/update/', CompanyViewSet.as_view({'put':'update'}), name='company_update_url'),
     path('<int:pk>/orders/', CompanyViewSet.as_view({'get':'orders'}), name='company_orders_url'),
     path('create/', CompanyViewSet.as_view({'post':'create'}), name='company_create_url'),
+    path('my/', CompanyViewSet.as_view({'get':'my'}), name='my_companies_url')
 ]
 
 
