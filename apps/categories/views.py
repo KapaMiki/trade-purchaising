@@ -45,7 +45,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()
-        serializer = serializer_class(data=request.data)
+        serializer = serializer_class(data=request.data, context={'request':request})
         serializer.is_valid(raise_exception=True)
         company = Company.objects.get(id=serializer.data['company_id'])
         Category.objects.create(company=company, **serializer.validated_data)
