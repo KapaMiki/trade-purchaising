@@ -39,7 +39,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         instance = self.get_object()
-        serializer = serializer_class(instance=instance, data=request.data, partial=True)
+        serializer = serializer_class(instance=instance, data=request.data, partial=True, context={'request':request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_202_ACCEPTED, data=serializer.validated_data)
