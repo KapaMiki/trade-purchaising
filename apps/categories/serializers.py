@@ -41,6 +41,6 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
     def validate_company_id(self, id):
         company = get_object_or_404(Company, id=id)
         if self.context['request'].user != company.owner:
-            return ValidationError("It's not your company")
+            raise ValidationError("It's not your company")
         return id
 
