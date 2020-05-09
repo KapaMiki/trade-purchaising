@@ -43,12 +43,16 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer = serializer_class(Company.objects.all(), many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-    def update(self, request, pk=None, *args, **kwargs):
+    def update(self, request, pk, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         instance = self.get_object()
         serializer = serializer_class(instance=instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
+        if serializer.validated_data.get('photo'):
+            serializer.validated_data['photo'] = instance.photo.url
+            
         return Response(status=status.HTTP_202_ACCEPTED, data=serializer.validated_data)
 
     def create(self, request, *args, **kwargs):
