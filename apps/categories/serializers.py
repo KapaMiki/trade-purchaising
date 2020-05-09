@@ -27,7 +27,7 @@ class CategoryUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name')
+        fields = ('name',)
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
