@@ -11,7 +11,7 @@ from .serializers import (
     ProductCreateSerializer,
     ProductUpdateSerializer
 )
-
+from apps.companies.serializers import CompanySerializer
 
 
 
@@ -47,12 +47,13 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()
-        serializer = serializer_class(data=request.data)
+        serializer = serializer_class(data=request.data, context={'request':request})
         serializer.is_valid(raise_exception=True)
         company = Company.objects.get(id=serializer.data['company_id'])
         category = Category.objects.get(id=serializer.data['category_id'])
         Product.objects.create(company=company, category=category, **serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED, data=serializer.validated_data)
+        comapny_serializer = CompanySerializer(company)
+        return Response(status=status.HTTP_201_CREATED, data=comapny_serializer.data)
 
 
 
