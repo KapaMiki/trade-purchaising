@@ -84,6 +84,6 @@ class CompanyViewSet(viewsets.ModelViewSet):
             'detail':'It is not your Company'
         })
 
-    def my(self, reuqest):
-        serializer = serializer_class(request.user.company_set.all(), many=True)
+    def my(self, request):
+        serializer = self.serializer_class(request.user.company_set.all(), many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
