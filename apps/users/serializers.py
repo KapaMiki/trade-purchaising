@@ -40,10 +40,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(min_length=2)
-    last_name = serializers.CharField(min_length=2)
+    first_name = serializers.CharField(min_length=2, allow_null=True)
+    last_name = serializers.CharField(min_length=2, allow_null=True)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
-    phone = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all())])
+    phone = serializers.CharField(allow_null=True)
     avatar = serializers.ImageField()
 
     class Meta:
