@@ -1,7 +1,7 @@
 from .models import Company
 from .permissions import IsOwnerCompany, IsBusinessman
 from apps.categories.serializers import CategorySerializer
-from apps.products.serializers import ProductOrdersSerializer
+from apps.products.serializers import ProductOrdersSerializer, ProductSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -87,3 +87,10 @@ class CompanyViewSet(viewsets.ModelViewSet):
     def my(self, request):
         serializer = self.serializer_class(request.user.company_set.all(), many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    def products(self, request, pk, *args, **kwargs):
+        company = get_object_or_404(Company, pk=pk)
+        products = company.product_set.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+        
