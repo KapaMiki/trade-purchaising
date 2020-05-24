@@ -13,6 +13,7 @@ from apps.orders.serializers import OrderSerializer
 class ProductSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()
     company_id = serializers.SerializerMethodField()
+    category_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -26,6 +27,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_company_id(self, obj):
         return obj.company.id
+    
+    def get_category_id(self, obj):
+        return obj.category.id
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
