@@ -11,7 +11,7 @@ class Product(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
+    description = models.TextField()
     count = models.IntegerField()
     price = models.IntegerField()
     avatar = models.ImageField(default='default.png', upload_to='products_images')
